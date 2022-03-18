@@ -1,0 +1,219 @@
+// usestate exercises--
+// 1-How to change the name when toggle on button 
+// #2
+const App = () => {
+    const [myName,setMyName]=useState("Hi my name is sahil");
+    const toggle=()=>{
+      let val=myName;
+    //   if(val==="Hi my name is sahil"){
+    //     setMyName("Hi my name is Raj")
+    //   }else{
+    //     setMyName("Hi my name is sahil")
+    //   }
+    // using turnry operator
+    val==="Hi my name is sahil" ? setMyName("hi i am raj"): setMyName(val);
+    }
+    return (
+      <>
+        <div>
+          <h1>{myName}</h1>
+          <button onClick={toggle}>clickMe</button>
+        </div>
+      </>
+    );
+  };
+//   useState using array map 
+// #3
+const App = () => {
+ 
+    const biodata=[{
+      id:0,myName:"sahil",age:21
+    },
+    {
+     id:1,myName:"faiz",age:11
+    }
+   ]
+   const [myArray,setMyArray]=useState(biodata);
+   const toggle=()=>{
+     setMyArray([]);
+    
+   }
+     return (
+       <>
+         <div>
+          {
+            myArray.map((curElem)=>{
+              return <h1>Name: {curElem.myName} & age : {curElem.age}</h1>
+            })
+          }
+           <button onClick={toggle}>clickMe</button>
+         </div>
+       </>
+     );
+   };
+  //  ...spread operator
+import React,{useState} from "react";
+
+const App = () => {
+  const[myObject,setMyObject]=useState({
+    myName:"Sahil",myAge:"21",degree:"MCs"
+  });
+  const toggle=()=>{
+    setMyObject({...myObject, myName:"MOHD SAHIL", myAge:"25"})
+  }
+  return (
+    <>
+      <div>
+        <h1>Name:{myObject.myName} & age : {myObject.myAge} & degree: {myObject.degree}</h1>
+        <button onClick={toggle}>update</button>
+      </div>
+    </>
+  );
+};
+
+// basic todolist with delete array item functionality
+const App = () => {
+ 
+  const biodata=[{
+    id:0,myName:"sahil",age:21
+  },
+  {
+   id:1,myName:"faiz",age:11
+  }
+ ]
+ const [myArray,setMyArray]=useState(biodata);
+ const remove=(id)=>{
+   const myNewArray=myArray.filter((curElem)=>{
+     return curElem.id !=id;
+   })
+   setMyArray(myNewArray);
+  
+ }
+ const toggle=()=>{
+   
+ }
+   return (
+     <>
+       <div>
+        {
+          myArray.map((curElem)=>{
+            return (
+            <><h1>Name: {curElem.myName} & age: {curElem.age}</h1><button onClick={ ()=>{remove(curElem.id)}}>delete</button></>
+            );
+          })
+        }
+         <button onClick={toggle}>clickMe</button>
+       </div>
+     </>
+   );
+ };
+//  short circuit evaluation
+import React, { useState } from "react";
+const App = () => {
+  const [demo,setDemo]=useState(""); //empty data means false condition
+  return (
+    <>
+      <div>
+    {/* 1-jb data false hota h to ye or operator right side(raj) wala show krta h or and operator left side wala(demo). 
+    1-jb data true matlab useState me("my name is") hota h to ye or operator left side(raj) wala show krta h or and operator right side wala(demo).  */}
+        <h1>{demo || "Raj"}</h1> 
+        <h1>{demo && "sahil"}</h1>
+      </div>
+    </>
+  );
+};
+export default App;
+
+
+export default App;
+
+
+form handling-
+import React, { useState } from "react";
+const App = () => {
+  const[email,setEmail]=useState("");
+  const[password,setPassword]=useState("");
+  const[entry,setEntry]=useState([]);
+
+  const submitForm=(e)=>{
+    if(email && password){
+      e.preventDefault();
+      const newEntry={id: new Date().getTime().toString(),email:email,password:password};
+      // you can write as using object destructring when key and value are same name then only
+      // const newEntry={id: new Date().getTime().toString(),email,password};
+      setEntry([...entry, newEntry]);
+      setEmail("");
+      setPassword("");
+    }else{
+      alert("plz fill the data")
+    }
+    
+  }
+
+ 
+  return (
+    <>
+      <form onSubmit={submitForm}>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input type="text" name="email" id="email" autoComplete="off" value={email} onChange={(e)=>setEmail(e.target.value)}/>
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input type="password" name="password" id="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <div>
+        {
+          entry.map((curE)=>{
+            return(
+              <div key={curE.id }>
+                <p>{curE.email}</p>
+                <p>{curE.password}</p>
+              </div>
+            )
+          })
+        }
+      </div>
+    </>
+  );
+};
+export default App;
+
+
+use effect--
+import React, { useState,useEffect } from "react";
+const App = () => {
+  const[change,setChange]=useState(0);
+
+ const toggle=()=>{
+      setChange(change+1);
+ }
+//  const toggle2=()=>{
+//      if(change>0){
+//       setChange(change-1);
+//      }
+     
+    useEffect(() => {
+      if(change>=1){
+        document.title=`chats (${change})`
+      }else{
+        document.title=`chats`
+      }
+     
+    },[change]);
+
+ 
+  return (
+    <>
+      <div className="form">
+        <h1>{change}</h1>
+        <button onClick={toggle}>increase</button>
+        {/* <button onClick={toggle2}>decrease</button> */}
+      </div>
+    </>
+  );
+};
+export default App;
+
